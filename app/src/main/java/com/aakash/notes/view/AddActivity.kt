@@ -1,11 +1,14 @@
 package com.aakash.notes.view
 
 import android.os.Bundle
+import android.view.Menu
 import android.view.View
+import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import com.aakash.notes.R
 import com.aakash.notes.databinding.ActivityAddBinding
 import com.aakash.notes.model.data.Notes
 import com.aakash.notes.viewmodel.MyApplication
@@ -32,7 +35,7 @@ class AddActivity : AppCompatActivity() {
             binding.txtAddNote.text = "Edit Note."
             binding.fabAddBtn.visibility = View.GONE
             binding.fabUpdateBtn.visibility = View.VISIBLE
-            binding.fabDeleteBtn.visibility = View.VISIBLE
+            binding.imgPopUp.visibility=View.VISIBLE
             setViews(id)
         }
         binding.fabAddBtn.setOnClickListener {
@@ -53,8 +56,26 @@ class AddActivity : AppCompatActivity() {
                 Toast.makeText(this, "Please fill all required fields!!", Toast.LENGTH_SHORT).show()
             }
         }
-    }
+        binding.imgPopUp.setOnClickListener { view ->
+            val popup = PopupMenu(this, view)
+            popup.menuInflater.inflate(R.menu.menu_items, popup.menu)
 
+            popup.setOnMenuItemClickListener { item ->
+                when (item.itemId) {
+                    R.id.delete -> {
+                        CoroutineScope(Dispatchers.IO).launch {
+                            val notes = viewModel.getIdData(id)
+                            deleteData(notes, id)
+                        }
+                        true
+                    }
+                    else -> false
+                }
+            }
+            popup.show()
+        }
+
+    }
     private fun deleteData(notes: Notes, id: Int) {
         lifecycleScope.launch {
             viewModel.deleteDataId(id)
@@ -97,4 +118,6 @@ class AddActivity : AppCompatActivity() {
         Toast.makeText(this, "Data Saved", Toast.LENGTH_SHORT).show()
         finish()
     }
+
+
 }

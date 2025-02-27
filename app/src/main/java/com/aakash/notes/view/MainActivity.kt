@@ -117,6 +117,9 @@ class MainActivity : AppCompatActivity() {
                 )
             ) {
                 filteredList.add(i)
+                binding.imgNoData.visibility = View.GONE
+            } else {
+                binding.imgNoData.visibility = View.VISIBLE
             }
         }
         adapter.filteredItem(filteredList)
