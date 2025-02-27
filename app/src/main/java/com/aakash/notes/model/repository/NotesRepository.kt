@@ -31,4 +31,6 @@ class NotesRepository(private val notesDao: NotesDao) {
     suspend fun deleteData(id:Int) {
         notesDao.deleteById(id)
     }
+
+    val countLiveData = notesDao.getCount()
 }

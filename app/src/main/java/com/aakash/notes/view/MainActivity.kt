@@ -42,6 +42,16 @@ class MainActivity : AppCompatActivity() {
             dataList = notesList
         }
 
+        viewModel.getCountData.observe(this) { data ->
+            if (data == 0) {
+                binding.imgNoData.visibility = View.VISIBLE
+            } else {
+                binding.imgNoData.visibility = View.GONE
+            }
+        }
+
+
+
         binding.edtSearchNote.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 println(p0)

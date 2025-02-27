@@ -61,7 +61,7 @@
         android:layout_margin="30dp"
         android:backgroundTint="@color/sec_color"
         android:contentDescription="editFab"
-        android:src="@drawable/ic_add"
+        android:src="@drawable/ic_done"
         android:tintMode="@color/white"
         app:fabCustomSize="50dp"
         app:layout_constraintBottom_toBottomOf="parent"

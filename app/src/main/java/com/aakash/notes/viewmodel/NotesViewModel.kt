@@ -10,6 +10,7 @@ class NotesViewModel(private val notesRepository: NotesRepository) : ViewModel()
 
     val getAllData = notesRepository.getAllNotes
 
+    val getCountData=notesRepository.countLiveData
     fun insertNotes(notes: Notes) {
         viewModelScope.launch {
             notesRepository.insertNotes(notes)

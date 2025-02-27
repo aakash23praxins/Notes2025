@@ -1,6 +1,5 @@
 package com.aakash.notes.model.database
 
-import android.provider.ContactsContract.CommonDataKinds.Note
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Delete
@@ -29,4 +28,9 @@ interface NotesDao {
 
     @Query("delete from notes where nId= :id")
     suspend fun deleteById(id:Int)
+
+    @Query("select COUNT() from notes")
+    fun getCount():LiveData<Int>
+
+
 }
