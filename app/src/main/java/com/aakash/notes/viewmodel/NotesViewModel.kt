@@ -4,9 +4,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aakash.notes.model.data.Notes
 import com.aakash.notes.model.repository.NotesRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class NotesViewModel(private val notesRepository: NotesRepository) : ViewModel() {
+@HiltViewModel
+class NotesViewModel @Inject constructor(private val notesRepository: NotesRepository) :
+    ViewModel() {
 
     val getAllData = notesRepository.getAllNotes
 

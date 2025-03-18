@@ -3,8 +3,9 @@ package com.aakash.notes.model.repository
 import androidx.annotation.WorkerThread
 import com.aakash.notes.model.data.Notes
 import com.aakash.notes.model.database.NotesDao
+import javax.inject.Inject
 
-class NotesRepository(private val notesDao: NotesDao) {
+class NotesRepository @Inject constructor(private val notesDao: NotesDao) {
 
     val getAllNotes = notesDao.getAllNotes()
 

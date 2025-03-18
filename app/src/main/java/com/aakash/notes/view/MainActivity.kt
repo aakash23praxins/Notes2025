@@ -7,6 +7,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.ViewModelProvider
@@ -20,10 +21,12 @@ import com.aakash.notes.view.adapter.NotesAdapter
 import com.aakash.notes.viewmodel.MyApplication
 import com.aakash.notes.viewmodel.NotesViewModel
 import com.aakash.notes.viewmodel.NotesViewModelFactory
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-    private lateinit var viewModel: NotesViewModel
+    private val viewModel: NotesViewModel by viewModels()
     private lateinit var adapter: NotesAdapter
     private var dataList = listOf<Notes>()
 
@@ -32,10 +35,6 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-
-
-        val factory = NotesViewModelFactory((application as MyApplication).repository)
-        viewModel = ViewModelProvider(this, factory)[NotesViewModel::class.java]
 
         viewModel.getAllData.observe(this) { notesList ->
             adapter.setData(notesList)

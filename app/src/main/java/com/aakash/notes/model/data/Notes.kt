@@ -9,5 +9,5 @@ data class Notes(
     val nId: Int,
     val nTitle: String,
     val nDesc: String,
-    val isFavourite: Boolean = false
+    val createdAt:Long= System.currentTimeMillis()
 )

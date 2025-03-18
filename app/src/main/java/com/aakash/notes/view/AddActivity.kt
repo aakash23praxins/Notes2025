@@ -1,10 +1,10 @@
 package com.aakash.notes.view
 
 import android.os.Bundle
-import android.view.Menu
 import android.view.View
 import android.widget.PopupMenu
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -14,20 +14,20 @@ import com.aakash.notes.model.data.Notes
 import com.aakash.notes.viewmodel.MyApplication
 import com.aakash.notes.viewmodel.NotesViewModel
 import com.aakash.notes.viewmodel.NotesViewModelFactory
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class AddActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAddBinding
-    private lateinit var viewModel: NotesViewModel
+    private val viewModel: NotesViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAddBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        val factory = NotesViewModelFactory((application as MyApplication).repository)
-        viewModel = ViewModelProvider(this, factory)[NotesViewModel::class.java]
 
         val isEdit = intent.getBooleanExtra("isEdit", false)
         val id = intent.getIntExtra("id", -1)
@@ -44,7 +44,7 @@ class AddActivity : AppCompatActivity() {
         binding.fabDeleteBtn.setOnClickListener {
             CoroutineScope(Dispatchers.IO).launch {
                 val notes = viewModel.getIdData(id)
-                deleteData(notes, id)
+                deleteData(id)
             }
         }
         binding.fabUpdateBtn.setOnClickListener {
@@ -64,8 +64,7 @@ class AddActivity : AppCompatActivity() {
                 when (item.itemId) {
                     R.id.delete -> {
                         CoroutineScope(Dispatchers.IO).launch {
-                            val notes = viewModel.getIdData(id)
-                            deleteData(notes, id)
+                            deleteData(id)
                         }
                         true
                     }
@@ -76,7 +75,8 @@ class AddActivity : AppCompatActivity() {
         }
 
     }
-    private fun deleteData(notes: Notes, id: Int) {
+
+    private fun deleteData(id: Int) {
         lifecycleScope.launch {
             viewModel.deleteDataId(id)
             Toast.makeText(applicationContext, "Deleted..", Toast.LENGTH_SHORT).show()
